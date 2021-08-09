@@ -16,7 +16,7 @@
 
     <nav class="navbar" role="navigation" aria-label="main navigation">
         <div class="navbar-brand">
-            <a class="navbar-item" href="https://bulma.io">
+            <a class="navbar-item" href="{% url 'index' %}">
                 <img src="{% static 'img/instagram_black.png' %}">
             </a>
 
@@ -30,7 +30,7 @@
 
         <div id="navbarBasicExample" class="navbar-menu">
             <div class="navbar-start">
-                <a class="navbar-item">
+                <a href="{% url 'index' %}" class="navbar-item">
                     <span class="material-icons">home</span>
                     Home
                 </a>
@@ -62,6 +62,13 @@
                     Profile
                 </a>
 
+                <a href="{% url 'newPost' %}" class="navbar-item">
+                    <span class="material-icons">
+                        perm_media
+                    </span>
+                    New Post
+                </a>
+
                 <div class="navbar-item has-dropdown is-hoverable">
                     <a class="navbar-link">
                         Settings
@@ -78,7 +85,7 @@
                             Report an issue
                         </a>
                         <hr class="navbar-divider">
-                        <a class="navbar-item">
+                        <a href="{% url 'logout' %}" class="navbar-item">
                             Log Out
                         </a>
                     </div>
@@ -88,6 +95,8 @@
 
         </div>
     </nav>
+    {% block banner %}
+    {% endblock %}
 
     <section class="section">
         <div class="container">

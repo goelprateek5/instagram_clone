@@ -18,7 +18,7 @@ class Tag(models.Model):
         verbose_name_plural = 'Tags'
 
     def get_absolute_url(self):
-        return reverse('tags', arg=[self.slug])
+        return reverse('tags', args=[self.slug])
     
     def __str__(self):
         return self.title
@@ -35,7 +35,7 @@ class Post(models.Model):
     posted = models.DateTimeField(auto_now_add=True)
     tags = models.ManyToManyField(Tag, related_name='tags')
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    likes = models.IntegerField()
+    likes = models.IntegerField(default=0)
 
     def get_absolute_url(self):
         return reverse('postdetails', args=[str(self.id)])

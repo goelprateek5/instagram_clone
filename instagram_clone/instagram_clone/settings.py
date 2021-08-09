@@ -121,7 +121,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
-STATICFILE_DIRS = [os.path.join(BASE_DIR,'instagram_clone/static')]
+STATICFILES_DIRS = [os.path.join(BASE_DIR,'instagram_clone/static')]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
@@ -129,11 +129,11 @@ STATICFILE_DIRS = [os.path.join(BASE_DIR,'instagram_clone/static')]
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT =os.path.join(BASE_DIR,'media')
+MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 LOGIN_REDIRECT_URL = 'index'
 LOGOUT_REDIRECT_URL = 'login'
-LOGIN_URL = 'user/login/'
+LOGIN_URL = '/user/login/'
 
