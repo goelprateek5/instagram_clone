@@ -6,7 +6,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Hello Bulma!</title>
+    <title>Instagram</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
@@ -27,7 +27,9 @@
                                 <div class="field">
                                     <p class="control has-icons-left">
                                         <label class="label is-medium">Username</label>
-                                        {{ form.username }}
+                                        <input type="text" name="username" autofocus="" autocapitalize="none"
+                                            autocomplete="username" maxlength="150" placeholder="Username" required=""
+                                            id="id_username" class="input is-medium">
                                         <span class="icon is-small is-left">
                                             <i class="fas fa-lock"></i>
                                         </span>
@@ -36,8 +38,9 @@
                                 <div class="field">
                                     <p class="control has-icons-left">
                                         <label class="label is-medium">Password</label>
-                                        {{ form.password }}
-                                        <span class="icon is-small is-left">
+                                        <input type="password" placeholder="Password" name="password"
+                                            autocomplete="current-password" required="" id="id_password"
+                                            class="input is-medium"> <span class="icon is-small is-left">
                                             <i class="fas fa-lock"></i>
                                         </span>
                                     </p>

@@ -17,7 +17,11 @@
                 <div class="media">
                     <div class="media-left">
                         <figure class="image is-48x48">
-                            <img src="https://bulma.io/images/placeholders/96x96.png" alt="mage">
+                            {% if post_item.user.profile.picture %}
+                            <img src="{{ post_item.user.profile.picture.url }}" alt="mage">
+                            {% else %}
+                            <img src="{% static 'img/default.png' %}" alt="mage">
+                            {% endif %}
                         </figure>
                     </div>
                     <div class="media-content">
@@ -43,6 +47,7 @@
 
             </div>
         </div>
+        <br>
         {% endfor %}
 
     </div>

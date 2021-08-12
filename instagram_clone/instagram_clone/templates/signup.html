@@ -28,7 +28,24 @@
                             <form method="post" action="" role="form">
                                 {% csrf_token %}
                                 <h3 class="title is-3">Create an account</h3>
-
+                                <div class="field">
+                                    <p class="control has-icons-left">
+                                        <label class="label is-medium">First Name</label>
+                                        {{ form.first_name }}
+                                        <span class="icon is-small is-left">
+                                            <i class="fas fa-lock"></i>
+                                        </span>
+                                    </p>
+                                </div>
+                                <div class="field">
+                                    <p class="control has-icons-left">
+                                        <label class="label is-medium">Last Name</label>
+                                        {{ form.last_name }}
+                                        <span class="icon is-small is-left">
+                                            <i class="fas fa-lock"></i>
+                                        </span>
+                                    </p>
+                                </div>
                                 <div class="field">
                                     <p class="control has-icons-left">
                                         <label class="label is-medium">Username</label>
@@ -75,6 +92,13 @@
                                         <button class="button is-success" type="submit" name="action">
                                             Sign Up!
                                         </button>
+                                    </p>
+                                </div>
+                                <div class="field">
+                                    <p class="control">
+                                        <a class="button is-info" href="{% url 'login' %}">
+                                            Login
+                                        </a>
                                     </p>
                                 </div>
 

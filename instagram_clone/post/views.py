@@ -64,8 +64,8 @@ def NewPost(request):
             tags_list = list(tags_form.split(','))
 
             for tag in tags_list:
-                t, created = Tag.objects.get_or_create(title=tag)
-                tags_obs.append(t.strip())
+                t, created = Tag.objects.get_or_create(title=tag.strip())
+                tags_obs.append(t)
             
             p, created = Post.objects.get_or_create(picture=picture, caption=caption, user_id=user)
             p.tags.set(tags_obs)

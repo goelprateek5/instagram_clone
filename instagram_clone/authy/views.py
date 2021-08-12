@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 from django.db import transaction
 
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth import update_session_auth_hash, authenticate, login
 
 from .models import Profile
 from post.models import Post, Follow, Stream
@@ -63,8 +63,17 @@ def Signup(request):
 			username = form.cleaned_data.get('username')
 			email = form.cleaned_data.get('email')
 			password = form.cleaned_data.get('password')
-			User.objects.create_user(username=username, email=email, password=password)
-			return redirect('index')
+			first_name = form.cleaned_data.get('first_name')
+			last_name = form.cleaned_data.get('last_name')
+			user = User.objects.create_user(username=username, email=email, password=password, last_name=last_name, first_name=first_name)
+			user.save()
+			profile = Profile.objects.get(user=user)
+			profile.first_name = first_name
+			profile.last_name = last_name
+			profile.save()
+			new_user = authenticate(username=form.cleaned_data.get('username'), password = form.cleaned_data.get('password'))
+			login(request, new_user)
+			return HttpResponseRedirect(reverse('edit_profile'))
 	else:
 		form = SignupForm()
 	
@@ -114,7 +123,7 @@ def EditProfile(request):
 			profile.url = form.cleaned_data.get('url')
 			profile.profile_info = form.cleaned_data.get('profile_info')
 			profile.save()
-			return redirect('index')
+			return HttpResponseRedirect(reverse('profile', args=[request.user]))
 	else:
 		form = EditProfileForm()
 

@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block content %}
 
+{% block content %}
 <div class="columns is-mobile">
     <div class="column is-half is-offset-one-quarter">
 
@@ -10,15 +10,13 @@
 
 
 
-
                 <form method="post" action="" enctype="multipart/form-data" role="form">
+                    <h3 class="title is-3 has-text-centered">Edit Profile</h3>
+
                     {% csrf_token %}
-                    <h3 class="title is-3 has-text-centered">New Post</h3>
-
-
 
                     <div class="field">
-                        <label class="label is-medium">Upload Picture</label>
+                        <label class="label is-medium">Upload Profile picture</label>
                         <div class="file is-info has-name">
                             <label class="file-label">
                                 <input class="file-input" type="file" name="picture" id="id_picture" accept="image/*">
@@ -47,10 +45,11 @@
                             }
                         }
                     </script>
+
                     <div class="field">
                         <p class="control has-icons-left">
-                            <label class="label is-medium">Caption</label>
-                            {{ form.caption }}
+                            <label class="label is-medium">First name</label>
+                            {{ form.first_name }}
                             <span class="icon is-small is-left">
                                 <i class="fas fa-lock"></i>
                             </span>
@@ -58,30 +57,56 @@
                     </div>
                     <div class="field">
                         <p class="control has-icons-left">
-                            <label class="label is-medium">Tags</label>
-                            {{ form.tags }}
+                            <label class="label is-medium">Last Name</label>
+                            {{ form.last_name }}
                             <span class="icon is-small is-left">
                                 <i class="fas fa-lock"></i>
                             </span>
                         </p>
+                    </div>
+                    <div class="field">
+                        <p class="control has-icons-left">
+                            <label class="label is-medium">Location</label>
+                            {{ form.location }}
+                            <span class="icon is-small is-left">
+                                <i class="fas fa-lock"></i>
+                            </span>
+                        </p>
+                    </div>
+                    <div class="field">
+                        <p class="control has-icons-left">
+                            <label class="label is-medium">Website</label>
+                            {{ form.url }}
+                            <span class="icon is-small is-left">
+                                <i class="fas fa-lock"></i>
+                            </span>
+                        </p>
+                    </div>
+                    <div class="field">
+                        <p class="control has-icons-left">
+                            <label class="label is-medium">Profile Info</label>
+                            {{ form.profile_info }}
+                            <span class="icon is-small is-left">
+                                <i class="fas fa-lock"></i>
+                            </span>
+                        </p>
+                    </div>
+                    <div class="row">
+                        <div class="col s12">
+                            <span style="color: red; font-weight: bold;">{{ form.errors }}</span>
+                        </div>
                     </div>
                     <div class="field">
                         <p class="control">
                             <button class="button is-success" type="submit" name="action">
-                                Create Post
+                                Update Profile
                             </button>
                         </p>
                     </div>
 
                 </form>
-
-
-
-
-
             </div>
         </div>
     </div>
 </div>
-
 {% endblock %}

@@ -22,10 +22,13 @@ def UniqueUser(value):
 		raise ValidationError('User with this username already exists.')
 
 class SignupForm(forms.ModelForm):
-	username = forms.CharField(widget=forms.TextInput(attrs={'class': 'input is-medium'}), max_length=30, required=True,)
-	email = forms.CharField(widget=forms.EmailInput(attrs={'class': 'input is-medium'}), max_length=100, required=True,)
-	password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'input is-medium'}))
-	confirm_password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'input is-medium'}), required=True, label="Confirm your password.")
+	username = forms.CharField(widget=forms.TextInput(attrs={'class': 'input is-medium', 'placeholder':'Username'}), max_length=30, required=True,)
+	email = forms.CharField(widget=forms.EmailInput(attrs={'class': 'input is-medium', 'placeholder':'Email Address'}), max_length=100, required=True,)
+	password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'input is-medium', 'placeholder':'Password'}))
+	confirm_password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'input is-medium', 'placeholder':'Confirm Password'}), required=True, label="Confirm your password.")
+	first_name = forms.CharField(widget=forms.TextInput(attrs={'class':'input is-medium', 'placeholder':'First name'}), max_length=50, required=True)
+	last_name = forms.CharField(widget=forms.TextInput(attrs={'class':'input is-medium', 'placeholder':'Last name'}), max_length=50, required=True)
+
 
 	class Meta:
 
@@ -73,11 +76,11 @@ class ChangePasswordForm(forms.ModelForm):
 
 class EditProfileForm(forms.ModelForm):
 	picture = forms.ImageField(required=False)
-	first_name = forms.CharField(widget=forms.TextInput(), max_length=50, required=False)
-	last_name = forms.CharField(widget=forms.TextInput(), max_length=50, required=False)
-	location = forms.CharField(widget=forms.TextInput(), max_length=25, required=False)
-	url = forms.URLField(widget=forms.TextInput(), max_length=60, required=False)
-	profile_info = forms.CharField(widget=forms.TextInput(), max_length=260, required=False)
+	first_name = forms.CharField(widget=forms.TextInput(attrs={'class':'input is-medium', 'placeholder':'First name'}), max_length=50, required=False)
+	last_name = forms.CharField(widget=forms.TextInput(attrs={'class':'input is-medium', 'placeholder':'Last name'}), max_length=50, required=False)
+	location = forms.CharField(widget=forms.TextInput(attrs={'class':'input is-medium', 'placeholder':'Location'}), max_length=25, required=False)
+	url = forms.URLField(widget=forms.TextInput(attrs={'class':'input is-medium', 'placeholder':'Website'}), max_length=60, required=False)
+	profile_info = forms.CharField(widget=forms.Textarea(attrs={'class':'input is-medium', 'placeholder':'Add a Bio'}), max_length=260, required=False)
 
 	class Meta:
 		model = Profile

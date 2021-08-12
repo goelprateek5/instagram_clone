@@ -5,8 +5,10 @@
 <article class="media">
     <div class="media-left">
         <figure class="image is-256x256">
-            <img class="is-rounded" src="https://bulma.io/images/placeholders/256x256.png">
+            <img class="is-rounded"
+                src="{% if profile.picture %}{{ profile.picture.url }}{% else %}{% static 'img/default.png' %}{% endif %}">
         </figure>
+
     </div>
 
     <div class="media-content media-right">
@@ -50,7 +52,7 @@
         </div>
         {% endif %}
         {% if user.is_authenticated and user == profile.user %}
-        <button class="button is-small">Edit Profile</button>
+        <a class="button is-small" href="{% url 'edit_profile' %}">Edit Profile</a>
         {% endif %}
 
     </div>
