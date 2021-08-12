@@ -59,7 +59,12 @@
                     <span class="material-icons">
                         face
                     </span>
+                    {% if request.user.is_authenticated %}
+                    <strong>{{ request.user }}</strong>
+                    {% else %}
                     Profile
+                    {% endif %}
+
                 </a>
 
                 <a href="{% url 'newPost' %}" class="navbar-item">

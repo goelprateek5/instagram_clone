@@ -68,10 +68,12 @@
             <a href="{% url 'profile' profile.user %}"><span class="material-icons"
                     style="margin-right: 3px;">dashboard</span>Posts</a>
         </li>
+        {% if user == profile.user %}
         <li class="{% if url_name == 'profilefavorite' %}is-active{% endif %}">
             <a href="{% url 'profilefavorite' profile.user %}"><span class="material-icons"
                     style="margin-right: 3px;">save_alt</span>Saved</a>
         </li>
+        {% endif %}
     </ul>
 </div>
 
@@ -87,6 +89,8 @@
                     </figure>
                 </div>
             </div>
+            {% empty %}
+            <h3 class="title is-3">No posts!</h3>
             {% endfor %}
         </div>
     </div>

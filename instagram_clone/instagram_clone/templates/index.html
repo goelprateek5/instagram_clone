@@ -25,16 +25,27 @@
                         </figure>
                     </div>
                     <div class="media-content">
-                        <p class="title is-4">{{ post_item.user.first_name }} {{ post_item.user.last_name }}
+                        <p class="title is-4">
+                            <a href="{% url 'profile' post_item.user %}">
+                                {{ post_item.user.first_name }}
+
+                                {{ post_item.user.last_name }}
+                            </a>
                         </p>
-                        <p class="subtitle is-6">@{{ post_item.user.username }}</p>
+                        <p class="subtitle is-6">
+                            <a href="{% url 'profile' post_item.user %}">
+                                @{{ post_item.user.username }}
+                            </a>
+                        </p>
+
                         {{ post_item.caption }}
                         <p>
                             {% for tag in post_item.tags.all %}
                             <a href="{{ tag.get_absolute_url }}">#{{ tag }}</a>
                             {% endfor %}
                         </p>
-                        <time datetime="2016-1-1">{{ post_item.posted }}</time>
+                        <br>
+                        <strong><small>{{ post_item.posted }}</small></strong>
                     </div>
 
                     <div class="media-right">

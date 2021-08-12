@@ -25,6 +25,8 @@ def UserProfile(request, username):
 
 	if url_name == 'profile':
 		posts = Post.objects.filter(user=user).order_by('-posted')
+	elif(url_name == 'profilefavorite' and str(username)!=str(request.user)):
+		return HttpResponseRedirect(reverse('profile', args=[username]))
 	else:
 		posts = profile.favorites.all()
 
