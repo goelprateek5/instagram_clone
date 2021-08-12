@@ -13,7 +13,7 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from authy.views import UserProfile
+from authy.views import UserProfile, follow
 from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
@@ -25,4 +25,5 @@ urlpatterns = [
     path('post/', include('post.urls')),
     path('<username>/saved', UserProfile, name = 'profilefavorite'),
     path('<username>/', UserProfile, name = 'profile'),
+    path('<username>/follow/<option>', follow, name = 'follow'),    
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
