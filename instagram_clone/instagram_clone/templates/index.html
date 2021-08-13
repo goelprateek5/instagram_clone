@@ -47,6 +47,7 @@
                         <br>
                         <strong><small>{{ post_item.posted }}</small></strong>
                     </div>
+                    {% if post_item.id in liked_posts %}
 
                     <div class="media-right">
                         <a href="{% url 'postlike' post_item.id %}">
@@ -54,6 +55,14 @@
                             <p class="has-text-danger">{{ post_item.likes }} Likes</p>
                         </a>
                     </div>
+                    {% else %}
+                    <div class="media-right">
+                        <a href="{% url 'postlike' post_item.id %}">
+                            <i class="material-icons has-text-danger">favorite_border</i>
+                            <p class="has-text-danger">{{ post_item.likes }} Likes</p>
+                        </a>
+                    </div>
+                    {% endif %}
                 </div>
 
             </div>

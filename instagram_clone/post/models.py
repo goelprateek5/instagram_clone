@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.fields import NullBooleanField, SlugField, related
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, post_delete
 from django.utils.text import slugify
 from django.urls import reverse
 import uuid
@@ -43,10 +43,18 @@ class Post(models.Model):
     def __str__(self):
         return str(self.id)
 
+    def update_like(sender, instance, *args, **kwargs):
+        post = instance.post
+        likes = Likes.objects.filter(post = post).count()
+        post.likes = likes
+        post.save()
+    
     
 class Follow(models.Model):
     follower = models.ForeignKey(User, on_delete=models.CASCADE, related_name='follower')
     following = models.ForeignKey(User, on_delete=models.CASCADE, related_name='following')
+
+        
 
 class Stream(models.Model):
     following = models.ForeignKey(User, on_delete=models.CASCADE, related_name='stream_following')
@@ -68,3 +76,5 @@ class Likes(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='post_likes')
 
 post_save.connect(Stream.add_post, sender=Post)
+post_save.connect(Post.update_like, sender = Likes)
+post_delete.connect(Post.update_like, sender = Likes)

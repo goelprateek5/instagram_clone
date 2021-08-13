@@ -8,11 +8,20 @@ from django.contrib.auth.decorators import login_required
 from post.models import Post, Stream, Tag, Likes
 from post.forms import NewPostForm
 from authy.models import Profile
+from comment.models import Comment
+from comment.forms import CommentForm
 
 @login_required
 def index(request):
     user = request.user
     posts = Stream.objects.filter(user=user)
+
+    liked_posts = []
+    #like button logic
+    likes = Likes.objects.filter(user=user)
+    for like in likes:
+        liked_posts.append(like.post.id)
+    # print(liked_posts)
 
     groups_ids = []
 
@@ -20,31 +29,57 @@ def index(request):
         groups_ids.append(post.post_id)
 
     post_items = Post.objects.filter(id__in=groups_ids).all().order_by('-posted')
+    # print(type(post_items[0].id))
 
     template = loader.get_template('index.html')
-
     context = {
-        'post_items': post_items
+        'post_items': post_items,
+        'liked_posts':liked_posts
     }
 
     return HttpResponse(template.render(context, request))
 
 @login_required
 def PostDetails(request, post_id):
+    user = request.user
     post = get_object_or_404(Post, id=post_id)
     favorited = False
+    liked = False
 
+    comments = Comment.objects.filter(post=post).order_by('date')
+
+    #comment form
+    if request.method == 'POST':
+        form=CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.post = post
+            comment.user = user
+            comment.save()
+            return HttpResponseRedirect(reverse('postdetails', args = [post_id]))
+    else:
+        form = CommentForm()
+    
+    #favorite check
     if request.user.is_authenticated:
-        profile = Profile.objects.get(user=request.user)
+        profile = Profile.objects.get(user=user)
 
         if profile.favorites.filter(id=post_id).exists():
             favorited = True
+
+    #liked check
+    if request.user.is_authenticated:
+        if Likes.objects.filter(user=user, post=post).exists():
+            liked = True
 
     template = loader.get_template('post_detail.html')
 
     context = {
         'post':post,
         'favorited':favorited,
+        'comments':comments,
+        'form':form,
+        'liked': liked
     }
 
     return HttpResponse(template.render(context,request))
@@ -106,16 +141,9 @@ def like(request, post_id):
     liked = Likes.objects.filter(user=user, post=post).count()
 
     if not liked:
-        like = Likes.objects.create(user=user,post=post)
-
-        current_likes = current_likes + 1
-
+        Likes.objects.create(user=user,post=post)
     else:
-        Likes.objects.filter(user=user, post=post).delete()
-        current_likes = current_likes - 1
-    
-    post.likes = current_likes
-    post.save()
+        Likes.objects.filter(user=user, post=post).delete()    
 
     return HttpResponseRedirect(reverse('postdetails', args = [post_id]))
 
