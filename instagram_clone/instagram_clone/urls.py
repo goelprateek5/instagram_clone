@@ -23,7 +23,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('user/', include('authy.urls')),
     path('post/', include('post.urls')),
+    path('direct/', include('direct.urls')),
     path('<username>/saved', UserProfile, name = 'profilefavorite'),
     path('<username>/', UserProfile, name = 'profile'),
-    path('<username>/follow/<option>', follow, name = 'follow'),    
+    path('<username>/follow/<option>', follow, name = 'follow'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -1,0 +1,133 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="columns is-mobile">
+    <div class="column is-one-quarter">
+        <!-- Direct messages left section -->
+        <aside class="menu" style="height: 600px;">
+            <div class="columns is-mobile">
+                <div class="column">
+                    <h1 class="title is-2">
+                        Messages
+
+                    </h1>
+                </div>
+                <div class="column is-one-quarter" style="margin: auto; display: block;">
+                    <!-- New message button -->
+                    <a href="{% url 'user_search' %}">
+                        <svg aria-label="New Message" fill="#262626" height="24" role="img" viewBox="0 0 44 44"
+                            width="24">
+                            <path
+                                d="M33.7 44.12H8.5a8.41 8.41 0 01-8.5-8.5v-25.2a8.41 8.41 0 018.5-8.5H23a1.5 1.5 0 010 3H8.5a5.45 5.45 0 00-5.5 5.5v25.2a5.45 5.45 0 005.5 5.5h25.2a5.45 5.45 0 005.5-5.5v-14.5a1.5 1.5 0 013 0v14.5a8.41 8.41 0 01-8.5 8.5z">
+                            </path>
+                            <path
+                                d="M17.5 34.82h-6.7a1.5 1.5 0 01-1.5-1.5v-6.7a1.5 1.5 0 01.44-1.06L34.1 1.26a4.45 4.45 0 016.22 0l2.5 2.5a4.45 4.45 0 010 6.22l-24.3 24.4a1.5 1.5 0 01-1.02.44zm-5.2-3h4.58l23.86-24a1.45 1.45 0 000-2l-2.5-2.5a1.45 1.45 0 00-2 0l-24 23.86z">
+                            </path>
+                            <path
+                                d="M38.2 14.02a1.51 1.51 0 01-1.1-.44l-6.56-6.56a1.5 1.5 0 012.12-2.12l6.6 6.6a1.49 1.49 0 010 2.12 1.51 1.51 0 01-1.06.4z">
+                            </path>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+            <ul style="overflow-y: scroll; height: 600px;" class="menu-list">
+
+
+
+                {% for message in messages %}
+                <a href="{% url 'directs' message.user.username %}"
+                    class="{% if active_direct == message.user.username %}is-active{% endif %}">
+                    <div class="box">
+                        <article class="media">
+                            <div class="media-left">
+                                <figure class="image is-64x64">
+                                    {% if message.user.profile.picture %}
+                                    <img src="{{ message.user.profile.picture.url }}" alt="mage">
+                                    {% else %}
+                                    <img src="{% static 'img/default.png' %}" alt="mage">
+                                    {% endif %}
+                                </figure>
+                            </div>
+                            <div class="media-content">
+                                <div class="content">
+                                    <p>
+                                        <strong>
+                                            {{ message.user.first_name }}
+                                            {{ message.user.last_name }}
+                                        </strong>
+                                        <small>@{{ message.user.username }}</small>
+                                    </p>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </a>
+
+                {% endfor %}
+
+            </ul>
+        </aside>
+    </div>
+    <div class="column">
+        <!-- Messages with the selected contact -->
+        <div style="overflow-y: scroll; height: 548px;">
+
+            {% for direct in directs %}
+            <div class="box">
+                <article class="media">
+                    <div class="media-content">
+                        <div class="content">
+                            <p>
+                                <strong>
+                                    {{ direct.sender.first_name }}
+                                    {{ direct.sender.last_name }}
+                                </strong>
+                                <small>
+                                    @{{ direct.sender.username }}
+                                </small>
+                                <strong><small>
+                                        on {{ direct.date|date:'N d G:i' }}
+                                    </small></strong>
+                            </p>
+                            <p>
+                                {{ direct.body }}
+                            </p>
+                        </div>
+                    </div>
+                </article>
+            </div>
+            {% endfor %}
+        </div>
+        <br>
+        <!-- Form to send message -->
+        <form action="{% url 'send_direct' %}" method="POST" role="form">
+            {% csrf_token %}
+            <article class="media">
+                <figure class="image is-64x64">
+                    {% if user.profile.picture %}
+                    <img src="{{ user.profile.picture.url }}" alt="mage">
+                    {% else %}
+                    <img src="{% static 'img/default.png' %}" alt="mage">
+                    {% endif %}
+                </figure>
+                <div class="media-content">
+                    <input type="hidden" name="to_user" value="{{ active_direct }}">
+                    <div class="field">
+                        <p class="control">
+                            <input class="input" name="body" placeholder="Type message..."></input>
+                        </p>
+                    </div>
+                    <nav class="level">
+                        <div class="level-left">
+                            <div class="level-item">
+                                <button type="submit" name="action" class="button is-info">Send</button>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+            </article>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

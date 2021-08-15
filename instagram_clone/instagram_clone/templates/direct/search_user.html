@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="columns is-mobile is-centered">
+    <div class="column is-narrow">
+
+        <form action="">
+            <div class="has-addons field">
+                <div class="control">
+                    <input class="input" name="q" type="text" placeholder="Search user..." value="{{ request.GET.q }}">
+                </div>
+
+                <div class="control">
+                    <button class="button is-success" type="submit">
+                        Search
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<br>
+<br>
+
+
+<div class="column">
+    <div class="columns is-multiline is-mobile is-centered">
+
+        {% for user in users %}
+        <div class="column is-narrow">
+            <a href="{% url 'new_conversation' user.username %}">
+
+                <div class="box">
+                    <article class="media">
+                        <div class="media-left">
+                            <figure class="image is-64x64">
+                                {% if user.profile.picture %}
+                                <img src="{{ user.profile.picture.url }}" alt="mage">
+                                {% else %}
+                                <img src="{% static 'img/default.png' %}" alt="mage">
+                                {% endif %}
+                            </figure>
+                        </div>
+                        <div class="media-content">
+                            <div class="content">
+                                <p>
+                                    <strong>{{ user.first_name }}
+                                        {{ user.last_name }}</strong><br>
+                                    <small>@{{ user.username }}</small>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </a>
+
+        </div>
+        {% endfor %}
+    </div>
+
+
+    {% endblock %}
