@@ -9,6 +9,7 @@
     <title>Instagram</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
 
 </head>
 
@@ -37,7 +38,6 @@
 
                 <a class="navbar-item">
                     <span class="material-icons">explore</span>
-
                     Explore
                 </a>
 
@@ -46,6 +46,9 @@
                         notifications
                     </span>
                     Notifications
+                    {% if directs_count %}
+                    <span class="badge">{{ directs_count }}</span>
+                    {% endif %}
                 </a>
 
                 <a class="navbar-item" href="{% url 'inbox' %}">
@@ -53,6 +56,9 @@
                         inbox
                     </span>
                     Inbox
+                    {% if directs_count %}
+                    <span class="badge">{{ directs_count }}</span>
+                    {% endif %}
                 </a>
 
                 <a class="navbar-item" href="{% url 'profile' request.user %}">

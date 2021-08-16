@@ -58,6 +58,16 @@
                                         <small>@{{ message.user.username }}</small>
                                     </p>
                                 </div>
+                                {% if message.unread %}
+                                <div class="content">
+                                    <p>
+                                        <span class="material-icons"
+                                            style="font-size: 18px; color: #3e8ed0">mark_chat_unread</span>
+                                        {{message.unread}}
+
+                                    </p>
+                                </div>
+                                {% endif %}
                             </div>
                         </article>
                     </div>
@@ -100,33 +110,37 @@
         </div>
         <br>
         <!-- Form to send message -->
-        <form action="{% url 'send_direct' %}" method="POST" role="form">
-            {% csrf_token %}
-            <article class="media">
-                <figure class="image is-64x64">
-                    {% if user.profile.picture %}
-                    <img src="{{ user.profile.picture.url }}" alt="mage">
-                    {% else %}
-                    <img src="{% static 'img/default.png' %}" alt="mage">
-                    {% endif %}
-                </figure>
-                <div class="media-content">
+        <article class="media">
+            <figure class="image is-64x64">
+                {% if user.profile.picture %}
+                <img src="{{ user.profile.picture.url }}" alt="mage">
+                {% else %}
+                <img src="{% static 'img/default.png' %}" alt="mage">
+                {% endif %}
+            </figure>
+            <div class="media-content">
+                <form action="{% url 'send_direct' %}" method="POST" role="form">
+
+                    {% csrf_token %}
+
                     <input type="hidden" name="to_user" value="{{ active_direct }}">
                     <div class="field">
                         <p class="control">
-                            <input class="input" name="body" placeholder="Type message..."></input>
+                            <input class="input" name="body" autofocus placeholder="Type message..."></input>
                         </p>
                     </div>
-                    <nav class="level">
-                        <div class="level-left">
-                            <div class="level-item">
-                                <button type="submit" name="action" class="button is-info">Send</button>
-                            </div>
-                        </div>
-                    </nav>
-                </div>
-            </article>
-        </form>
+                    <div class="field">
+                        <p class="control">
+                            <button type="submit" name="action" class="button is-info">
+                                Send
+                            </button>
+                        </p>
+
+                    </div>
+                </form>
+
+            </div>
+        </article>
     </div>
 </div>
 
