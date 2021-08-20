@@ -1,5 +1,6 @@
 {% load static %}
 
+{% load humanize %}
 <!DOCTYPE html>
 <html>
 
@@ -180,34 +181,50 @@
                     <!-- Follow Notifications -->
 
                     <!-- Like Notifications -->
+
+                    {% for notification in notifications %}
                     <div class="notification">
                         <button class="delete"></button>
                         <article class="media">
-                            <figure class="media-left">
-                                <p class="image is-64x64">
-                                    <img src="https://bulma.io/images/placeholders/128x128.png">
-                                </p>
-                            </figure>
+                            <a href="{% url 'profile' notification.sender %}">
+                                <figure class="image is-48x48">
+                                    {% if notification.sender.profile.picture %}
+                                    <img src="{{ notification.sender.profile.picture.url }}" alt="mage">
+                                    {% else %}
+                                    <img src="{% static 'img/default.png' %}" alt="mage">
+                                    {% endif %}
+                                </figure>
+                            </a>
                             <div class="media-content">
                                 <div class="content">
                                     <p>
-                                        <strong>John Smith</strong> <small>@johnsmith</small>
+                                        <strong>{{ notification.sender.first_name }}
+
+                                            {{ notification.sender.last_name }}</strong> <small>
+                                            @{{ notification.sender.username }}</small>
                                         <br>
                                         Liked your post
-                                    <p><small> <strong> 3h ago </strong> </small></p>
+                                    <p>
+                                        <strong>
+                                            <small>
+                                                {{ notification.date|naturaltime }}
+                                            </small>
+                                        </strong>
+                                    </p>
                                     </p>
                                 </div>
                             </div>
                             <div class="media-right">
                                 <figure class="image is-128x128">
-                                    <img src="https://bulma.io/images/placeholders/128x128.png">
+                                    <a href="{{ notification.post.get_absolute_url }}"><img
+                                            src="{{ notification.post.picture.url }}" alt="Image"></a>
                                 </figure>
-
                             </div>
 
 
                         </article>
                     </div>
+                    {% endfor %}
                     <!-- Like Notifications -->
 
 

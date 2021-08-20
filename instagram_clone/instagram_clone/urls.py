@@ -24,6 +24,7 @@ urlpatterns = [
     path('user/', include('authy.urls')),
     path('post/', include('post.urls')),
     path('direct/', include('direct.urls')),
+    path('notifications/', include('notifications.urls')),
     path('<username>/saved', UserProfile, name = 'profilefavorite'),
     path('<username>/', UserProfile, name = 'profile'),
     path('<username>/follow/<option>', follow, name = 'follow'),
