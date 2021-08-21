@@ -54,6 +54,13 @@ class Follow(models.Model):
     follower = models.ForeignKey(User, on_delete=models.CASCADE, related_name='follower')
     following = models.ForeignKey(User, on_delete=models.CASCADE, related_name='following')
 
+    def follow_notification(sender, instance, *args, **kwargs):
+        follow = instance
+        sender = follow.follower
+        following = follow.following
+
+        notify = notification(sender=sender, user = following, notification_type=3)
+        notify.save()
         
 
 class Stream(models.Model):
@@ -97,3 +104,6 @@ post_save.connect(Post.update_like, sender = Likes)
 post_delete.connect(Post.update_like, sender = Likes)
 post_save.connect(Likes.like_notification, sender = Likes)
 post_delete.connect(Likes.unlike_notification, sender = Likes)
+
+#follow
+post_save.connect(Follow.follow_notification, sender = Follow)

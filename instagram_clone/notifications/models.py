@@ -8,7 +8,7 @@ from django.db.models.fields import related
 class notification(models.Model):
     NOTIFICATION_TYPES = ((1, 'Like'), (2, 'Comment'), (3, 'Follow'))
 
-    post = models.ForeignKey('post.Post', on_delete=models.CASCADE, related_name='notification_post')
+    post = models.ForeignKey('post.Post', on_delete=models.CASCADE, related_name='notification_post', null=True, blank=True)
     sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name='notification_from_user')
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='notification_to_user')
     notification_type = models.IntegerField(choices=NOTIFICATION_TYPES)

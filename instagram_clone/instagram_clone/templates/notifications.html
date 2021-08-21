@@ -1,237 +1,166 @@
+{% extends 'base.html' %}
 {% load static %}
-
 {% load humanize %}
-<!DOCTYPE html>
-<html>
+{% block content %}
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Instagram</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+<div class="columns is-mobile is-centered">
+  <div class="column is-half">
+    {% for notification in notifications %}
 
-</head>
+    <!-- Comment Notifications-->
+    {% if notification.notification_type == 2 %}
 
-<body>
+    <div class="notification">
+      <button class="delete"></button>
+      <article class="media">
+        <a href="{% url 'profile' notification.sender %}">
+          <figure class="image is-48x48 media-left">
+            {% if notification.sender.profile.picture %}
+            <img src="{{ notification.sender.profile.picture.url }}" alt="mage">
+            {% else %}
+            <img src="{% static 'img/default.png' %}" alt="mage">
+            {% endif %}
+          </figure>
+        </a>
+        <div class="media-content">
+          <div class="content">
+            <p>
+              <strong>
+                {{ notification.sender.first_name }}
 
-    <nav class="navbar" role="navigation" aria-label="main navigation">
-        <div class="navbar-brand">
-            <a class="navbar-item" href="{% url 'index' %}">
-                <img src="{% static 'img/instagram_black.png' %}">
+                {{ notification.sender.last_name }}
+              </strong>
+              <small>
+                @{{ notification.sender.username }}
+              </small>
+              <br>
+              <strong>Commented:</strong>
+              {{ notification.text_preview }}
+              <p>
+                <strong>
+                  <small>
+                    {{ notification.date|naturaltime }}
+                  </small>
+                </strong>
+              </p>
+            </p>
+          </div>
+        </div>
+        <div class="media-right">
+          <figure class="image is-128x128">
+            <a href="{{ notification.post.get_absolute_url }}">
+              <img src="{{ notification.post.picture.url }}" alt="Image">
             </a>
+          </figure>
+        </div>
+      </article>
+    </div>
+    <!-- Comment Notifications-->
 
-            <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false"
-                data-target="navbarBasicExample">
-                <span aria-hidden="true"></span>
-                <span aria-hidden="true"></span>
-                <span aria-hidden="true"></span>
+    <!-- Follow Notifications -->
+    {% elif notification.notification_type == 3 %}
+    <div class="notification">
+      <button class="delete"></button>
+      <article class="media">
+        <a href="{% url 'profile' notification.sender %}">
+          <figure class="image is-48x48 media-left">
+            {% if notification.sender.profile.picture %}
+            <img src="{{ notification.sender.profile.picture.url }}" alt="mage">
+            {% else %}
+            <img src="{% static 'img/default.png' %}" alt="mage">
+            {% endif %}
+          </figure>
+        </a>
+        <div class="media-content">
+          <div class="content">
+            <p>
+              <strong>
+                {{ notification.sender.first_name }}
+
+                {{ notification.sender.last_name }}
+              </strong>
+              <small>
+                @{{ notification.sender.username }}
+              </small>
+              <br>
+              Started following you!
+              <p>
+                <strong>
+                  <small>
+                    {{ notification.date|naturaltime }}
+                  </small>
+                </strong>
+              </p>
+            </p>
+          </div>
+        </div>
+        <div class="media-right">
+          <a class="button is-info" href="{% url 'profile' notification.sender %}">
+            <span class="icon is-small">
+              <i class="material-icons">person_add</i>
+            </span>
+            <span>Check Profile</span>
+          </a>
+        </div>
+
+      </article>
+    </div>
+    <!-- Follow Notifications -->
+
+    <!-- Like Notifications -->
+    {% elif notification.notification_type == 1 %}
+
+    <div class="notification">
+      <button class="delete"></button>
+      <article class="media">
+        <a href="{% url 'profile' notification.sender %}">
+          <figure class="image is-48x48 media-left">
+            {% if notification.sender.profile.picture %}
+            <img src="{{ notification.sender.profile.picture.url }}" alt="mage">
+            {% else %}
+            <img src="{% static 'img/default.png' %}" alt="mage">
+            {% endif %}
+          </figure>
+        </a>
+        <div class="media-content">
+          <div class="content">
+            <p>
+              <strong>
+                {{ notification.sender.first_name }}
+
+                {{ notification.sender.last_name }}
+              </strong>
+              <small>
+                @{{ notification.sender.username }}
+              </small>
+              <br>
+              Liked your post
+              <p>
+                <strong>
+                  <small>
+                    {{ notification.date|naturaltime }}
+                  </small>
+                </strong>
+              </p>
+            </p>
+          </div>
+        </div>
+        <div class="media-right">
+          <figure class="image is-128x128">
+            <a href="{{ notification.post.get_absolute_url }}">
+              <img src="{{ notification.post.picture.url }}" alt="Image">
             </a>
+          </figure>
         </div>
 
-        <div id="navbarBasicExample" class="navbar-menu">
-            <div class="navbar-start">
-                <a href="{% url 'index' %}" class="navbar-item">
-                    <span class="material-icons">home</span>
-                    Home
-                </a>
 
-                <a class="navbar-item">
-                    <span class="material-icons">explore</span>
-                    Explore
-                </a>
-
-                <a class="navbar-item">
-                    <span class="material-icons">
-                        notifications
-                    </span>
-                    Notifications
-                    {% if directs_count %}
-                    <span class="badge">{{ directs_count }}</span>
-                    {% endif %}
-                </a>
-
-                <a class="navbar-item" href="{% url 'inbox' %}">
-                    <span class="material-icons">
-                        inbox
-                    </span>
-                    Inbox
-                    {% if directs_count %}
-                    <span class="badge">{{ directs_count }}</span>
-                    {% endif %}
-                </a>
-
-                <a class="navbar-item" href="{% url 'profile' request.user %}">
-                    <span class="material-icons">
-                        face
-                    </span>
-                    {% if request.user.is_authenticated %}
-                    <strong>{{ request.user }}</strong>
-                    {% else %}
-                    Profile
-                    {% endif %}
-
-                </a>
-
-                <a href="{% url 'newPost' %}" class="navbar-item">
-                    <span class="material-icons">
-                        perm_media
-                    </span>
-                    New Post
-                </a>
-
-                <div class="navbar-item has-dropdown is-hoverable">
-                    <a class="navbar-link">
-                        Settings
-                    </a>
-
-                    <div class="navbar-dropdown">
-                        <a class="navbar-item" href="{% url 'change_password' %}">
-                            Change Password
-                        </a>
-                        <a class="navbar-item">
-                            Contact
-                        </a>
-                        <a class="navbar-item">
-                            Report an issue
-                        </a>
-                        <hr class="navbar-divider">
-                        <a href="{% url 'logout' %}" class="navbar-item">
-                            Log Out
-                        </a>
-                    </div>
-                </div>
-            </div>
+      </article>
+    </div>
+    {% endif %}
+    {% endfor %}
+    <!-- Like Notifications -->
 
 
-        </div>
-    </nav>
-
-    <section class="section">
-        <div class="container">
-            <div class="columns is-mobile is-centered">
-                <div class="column is-half">
-
-                    <!-- Comment Notifications-->
-                    <div class="notification">
-                        <button class="delete"></button>
-                        <article class="media">
-                            <figure class="media-left">
-                                <p class="image is-64x64">
-                                    <img src="https://bulma.io/images/placeholders/128x128.png">
-                                </p>
-                            </figure>
-                            <div class="media-content">
-                                <div class="content">
-                                    <p>
-                                        <strong>John Smith</strong> <small>@johnsmith</small>
-                                        <br>
-                                        <strong>Commented:</strong>
-                                        Lorem ipsum dolor sit amet, consectetur adipiscing
-                                        elit. Proin ornare magna
-                                        eros, eu
-                                        pellentesque tortor
-                                        vestibulum ut. Maecenas non massa sem. Etiam finibus odio quis feugiat
-                                        facilisis.
-                                    <p><small> <strong> 3h ago </strong> </small></p>
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="media-right">
-                                <figure class="image is-128x128">
-                                    <img src="https://bulma.io/images/placeholders/128x128.png">
-                                </figure>
-
-                            </div>
-                        </article>
-                    </div>
-                    <!-- Comment Notifications-->
-
-                    <!-- Follow Notifications -->
-                    <div class="notification">
-                        <button class="delete"></button>
-                        <article class="media">
-                            <figure class="media-left">
-                                <p class="image is-64x64">
-                                    <img src="https://bulma.io/images/placeholders/128x128.png">
-                                </p>
-                            </figure>
-                            <div class="media-content">
-                                <div class="content">
-                                    <p>
-                                        <strong>John Smith</strong> <small>@johnsmith</small>
-                                        <br>
-                                        Started following you!
-                                    <p><small> <strong> 3h ago </strong> </small></p>
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="media-right">
-                                <button class="button is-info">
-                                    <span class="icon is-small">
-                                        <i class="material-icons">person_add</i>
-                                    </span>
-                                    <span>Follow back</span>
-                                </button>
-                            </div>
-
-                        </article>
-                    </div>
-                    <!-- Follow Notifications -->
-
-                    <!-- Like Notifications -->
-
-                    {% for notification in notifications %}
-                    <div class="notification">
-                        <button class="delete"></button>
-                        <article class="media">
-                            <a href="{% url 'profile' notification.sender %}">
-                                <figure class="image is-48x48">
-                                    {% if notification.sender.profile.picture %}
-                                    <img src="{{ notification.sender.profile.picture.url }}" alt="mage">
-                                    {% else %}
-                                    <img src="{% static 'img/default.png' %}" alt="mage">
-                                    {% endif %}
-                                </figure>
-                            </a>
-                            <div class="media-content">
-                                <div class="content">
-                                    <p>
-                                        <strong>{{ notification.sender.first_name }}
-
-                                            {{ notification.sender.last_name }}</strong> <small>
-                                            @{{ notification.sender.username }}</small>
-                                        <br>
-                                        Liked your post
-                                    <p>
-                                        <strong>
-                                            <small>
-                                                {{ notification.date|naturaltime }}
-                                            </small>
-                                        </strong>
-                                    </p>
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="media-right">
-                                <figure class="image is-128x128">
-                                    <a href="{{ notification.post.get_absolute_url }}"><img
-                                            src="{{ notification.post.picture.url }}" alt="Image"></a>
-                                </figure>
-                            </div>
-
-
-                        </article>
-                    </div>
-                    {% endfor %}
-                    <!-- Like Notifications -->
-
-
-                </div>
-            </div>
-        </div>
-    </section>
-</body>
-
-</html>
+  </div>
+</div>
+{% endblock %}
