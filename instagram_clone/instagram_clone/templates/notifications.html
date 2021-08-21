@@ -11,7 +11,7 @@
     {% if notification.notification_type == 2 %}
 
     <div class="notification">
-      <button class="delete"></button>
+      <a class="delete" href="{% url 'delete_notification' notification.id %}"></a>
       <article class="media">
         <a href="{% url 'profile' notification.sender %}">
           <figure class="image is-48x48 media-left">
@@ -49,7 +49,10 @@
         <div class="media-right">
           <figure class="image is-128x128">
             <a href="{{ notification.post.get_absolute_url }}">
-              <img src="{{ notification.post.picture.url }}" alt="Image">
+              <img src="{{ notification.post.picture.url }}" alt="Image" style="width: 100%;
+                height: 100%;
+                object-fit: cover;
+                overflow: hidden;">
             </a>
           </figure>
         </div>
@@ -60,7 +63,7 @@
     <!-- Follow Notifications -->
     {% elif notification.notification_type == 3 %}
     <div class="notification">
-      <button class="delete"></button>
+      <a class="delete" href="{% url 'delete_notification' notification.id %}"></a>
       <article class="media">
         <a href="{% url 'profile' notification.sender %}">
           <figure class="image is-48x48 media-left">
@@ -111,7 +114,7 @@
     {% elif notification.notification_type == 1 %}
 
     <div class="notification">
-      <button class="delete"></button>
+      <a class="delete" href="{% url 'delete_notification' notification.id %}"></a>
       <article class="media">
         <a href="{% url 'profile' notification.sender %}">
           <figure class="image is-48x48 media-left">
@@ -148,7 +151,10 @@
         <div class="media-right">
           <figure class="image is-128x128">
             <a href="{{ notification.post.get_absolute_url }}">
-              <img src="{{ notification.post.picture.url }}" alt="Image">
+              <img src="{{ notification.post.picture.url }}" alt="Image" style="width: 100%;
+                height: 100%;
+                object-fit: cover;
+                overflow: hidden;">
             </a>
           </figure>
         </div>
