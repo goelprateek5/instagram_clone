@@ -1,11 +1,9 @@
-from typing import List
-from django import template
 from django.shortcuts import render, redirect, get_object_or_404
 from django.template import context, loader
 from django.urls import reverse
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
-from post.models import Post, Stream, Tag, Likes
+from post.models import Post, Stream, Tag, Likes, PostFileContent
 from post.forms import NewPostForm
 from authy.models import Profile
 from comment.models import Comment
@@ -21,7 +19,7 @@ def index(request):
     likes = Likes.objects.filter(user=user)
     for like in likes:
         liked_posts.append(like.post.id)
-    # print(liked_posts)
+
 
     groups_ids = []
 
@@ -29,7 +27,7 @@ def index(request):
         groups_ids.append(post.post_id)
 
     post_items = Post.objects.filter(id__in=groups_ids).all().order_by('-posted')
-    # print(type(post_items[0].id))
+    
 
     template = loader.get_template('index.html')
     context = {
@@ -86,13 +84,14 @@ def PostDetails(request, post_id):
 
 @login_required
 def NewPost(request):
-    user = request.user.id
+    user = request.user
     tags_obs = []
+    files_obj=[]
 
     if request.method == 'POST':
         form = NewPostForm(request.POST, request.FILES)
         if form.is_valid():
-            picture = form.cleaned_data.get('picture')
+            files = request.FILES.getlist('content')
             caption = form.cleaned_data.get('caption')
             tags_form = form.cleaned_data.get('tags')
 
@@ -101,9 +100,15 @@ def NewPost(request):
             for tag in tags_list:
                 t, created = Tag.objects.get_or_create(title=tag.strip())
                 tags_obs.append(t)
+
+            for file in files:
+                file_instance = PostFileContent(file=file, user=user)
+                file_instance.save()
+                files_obj.append(file_instance)
             
-            p, created = Post.objects.get_or_create(picture=picture, caption=caption, user_id=user)
+            p, created = Post.objects.get_or_create(caption=caption, user=user)
             p.tags.set(tags_obs)
+            p.content.set(files_obj)
             p.save()
 
             return redirect('index')
