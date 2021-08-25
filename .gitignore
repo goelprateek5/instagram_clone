@@ -1,3 +1,5 @@
 .vscode
 insta_clone
 __pycache__
+private
+.DS_Store
