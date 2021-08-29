@@ -42,7 +42,8 @@
                             <div class="media-left">
                                 <figure class="image is-64x64">
                                     {% if message.user.profile.picture %}
-                                    <img src="{{ message.user.profile.picture.url }}" alt="mage">
+                                    <img style="max-height:100%;max-width:100%"
+                                        src="{{ message.user.profile.picture.url }}" alt="mage">
                                     {% else %}
                                     <img src="{% static 'img/default.png' %}" alt="mage">
                                     {% endif %}
@@ -113,7 +114,7 @@
         <article class="media">
             <figure class="image is-64x64">
                 {% if user.profile.picture %}
-                <img src="{{ user.profile.picture.url }}" alt="mage">
+                <img style="max-height:100%;max-width:100%"" src=" {{ user.profile.picture.url }}" alt="mage">
                 {% else %}
                 <img src="{% static 'img/default.png' %}" alt="mage">
                 {% endif %}

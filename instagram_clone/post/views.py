@@ -111,7 +111,7 @@ def NewPost(request):
             p.content.set(files_obj)
             p.save()
 
-            return redirect('index')
+            return redirect('profile', user.username)
 
     else:
         form = NewPostForm()
