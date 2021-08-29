@@ -84,9 +84,30 @@
             {% for post in posts %}
             <div class="column is-one-quarter">
                 <div class="box">
-                    <figure class="image is-264x264">
-                        <a href="{{ post.get_absolute_url }}"> <img src="{{ post.picture.url }}" alt="Image"></a>
-                    </figure>
+                    {% if post.content.first.file.name|slice:'-3:' in "jpgpng" %}
+                    <div class="card-image">
+                        <div class="slideshow-container">
+                            <figure class="image">
+                                <a href="{{ post.get_absolute_url }}">
+                                    <img src="{{ post.content.first.file.url }}" alt="Image">
+                                </a>
+                            </figure>
+                        </div>
+                    </div>
+                    {% else %}
+                    <div class="card-image">
+                        <div class="slideshow-container">
+                            <figure class="image">
+                                <a href="{{ post.get_absolute_url }}">
+                                    <video controls="controls" preload="metadata" style="width:100%">
+                                        <source src="{{ post.content.first.file.url }}#t=0.5" type="video/mp4">
+                                </a>
+                            </figure>
+                        </div>
+                    </div>
+                    {% endif %}
+
+
                 </div>
             </div>
             {% empty %}

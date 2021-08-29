@@ -8,11 +8,28 @@
 
         {% for post_item in post_items %}
         <div class="card">
+            {% if post_item.content.first.file.name|slice:'-3:' in "jpgpng" %}
             <div class="card-image">
-                <figure class="image is-4by3">
-                    <a href="{{ post_item.get_absolute_url }}"><img src="{{ post_item.picture.url }}" alt="Image"></a>
-                </figure>
+                <div class="slideshow-container">
+                    <figure class="image">
+                        <a href="{{ post_item.get_absolute_url }}">
+                            <img src="{{ post_item.content.first.file.url }}" alt="Image">
+                        </a>
+                    </figure>
+                </div>
             </div>
+            {% else %}
+            <div class="card-image">
+                <div class="slideshow-container">
+                    <figure class="image">
+                        <a href="{{ post_item.get_absolute_url }}">
+                            <video controls="controls" preload="metadata" style="width:100%">
+                                <source src="{{ post_item.content.first.file.url }}#t=0.5" type="video/mp4">
+                        </a>
+                    </figure>
+                </div>
+            </div>
+            {% endif %}
             <div class="card-content">
                 <div class="media">
                     <div class="media-left">

@@ -41,13 +41,13 @@
                     Explore
                 </a>
 
-                <a class="navbar-item">
+                <a class="navbar-item" href="{% url 'show_notifications' %}">
                     <span class="material-icons">
                         notifications
                     </span>
                     Notifications
-                    {% if directs_count %}
-                    <span class="badge">{{ directs_count }}</span>
+                    {% if notification_count %}
+                    <span class="badge">{{ notification_count }}</span>
                     {% endif %}
                 </a>
 
@@ -122,5 +122,8 @@
         </div>
     </section>
 </body>
+<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+<script src="{% static 'js/init.js' %}"></script>
+<script src="{% static 'js/slider.js' %}"></script>
 
 </html>

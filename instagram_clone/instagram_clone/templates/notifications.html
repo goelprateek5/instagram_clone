@@ -1,0 +1,172 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+{% block content %}
+
+<div class="columns is-mobile is-centered">
+  <div class="column is-half">
+    {% for notification in notifications %}
+
+    <!-- Comment Notifications-->
+    {% if notification.notification_type == 2 %}
+
+    <div class="notification">
+      <a class="delete" href="{% url 'delete_notification' notification.id %}"></a>
+      <article class="media">
+        <a href="{% url 'profile' notification.sender %}">
+          <figure class="image is-48x48 media-left">
+            {% if notification.sender.profile.picture %}
+            <img src="{{ notification.sender.profile.picture.url }}" alt="mage">
+            {% else %}
+            <img src="{% static 'img/default.png' %}" alt="mage">
+            {% endif %}
+          </figure>
+        </a>
+        <div class="media-content">
+          <div class="content">
+            <p>
+              <strong>
+                {{ notification.sender.first_name }}
+
+                {{ notification.sender.last_name }}
+              </strong>
+              <small>
+                @{{ notification.sender.username }}
+              </small>
+              <br>
+              <strong>Commented:</strong>
+              {{ notification.text_preview }}
+              <p>
+                <strong>
+                  <small>
+                    {{ notification.date|naturaltime }}
+                  </small>
+                </strong>
+              </p>
+            </p>
+          </div>
+        </div>
+        <div class="media-right">
+          <figure class="image is-128x128">
+            <a href="{{ notification.post.get_absolute_url }}">
+              <img src="{{ notification.post.picture.url }}" alt="Image" style="width: 100%;
+                height: 100%;
+                object-fit: cover;
+                overflow: hidden;">
+            </a>
+          </figure>
+        </div>
+      </article>
+    </div>
+    <!-- Comment Notifications-->
+
+    <!-- Follow Notifications -->
+    {% elif notification.notification_type == 3 %}
+    <div class="notification">
+      <a class="delete" href="{% url 'delete_notification' notification.id %}"></a>
+      <article class="media">
+        <a href="{% url 'profile' notification.sender %}">
+          <figure class="image is-48x48 media-left">
+            {% if notification.sender.profile.picture %}
+            <img src="{{ notification.sender.profile.picture.url }}" alt="mage">
+            {% else %}
+            <img src="{% static 'img/default.png' %}" alt="mage">
+            {% endif %}
+          </figure>
+        </a>
+        <div class="media-content">
+          <div class="content">
+            <p>
+              <strong>
+                {{ notification.sender.first_name }}
+
+                {{ notification.sender.last_name }}
+              </strong>
+              <small>
+                @{{ notification.sender.username }}
+              </small>
+              <br>
+              Started following you!
+              <p>
+                <strong>
+                  <small>
+                    {{ notification.date|naturaltime }}
+                  </small>
+                </strong>
+              </p>
+            </p>
+          </div>
+        </div>
+        <div class="media-right">
+          <a class="button is-info" href="{% url 'profile' notification.sender %}">
+            <span class="icon is-small">
+              <i class="material-icons">person_add</i>
+            </span>
+            <span>Check Profile</span>
+          </a>
+        </div>
+
+      </article>
+    </div>
+    <!-- Follow Notifications -->
+
+    <!-- Like Notifications -->
+    {% elif notification.notification_type == 1 %}
+
+    <div class="notification">
+      <a class="delete" href="{% url 'delete_notification' notification.id %}"></a>
+      <article class="media">
+        <a href="{% url 'profile' notification.sender %}">
+          <figure class="image is-48x48 media-left">
+            {% if notification.sender.profile.picture %}
+            <img src="{{ notification.sender.profile.picture.url }}" alt="mage">
+            {% else %}
+            <img src="{% static 'img/default.png' %}" alt="mage">
+            {% endif %}
+          </figure>
+        </a>
+        <div class="media-content">
+          <div class="content">
+            <p>
+              <strong>
+                {{ notification.sender.first_name }}
+
+                {{ notification.sender.last_name }}
+              </strong>
+              <small>
+                @{{ notification.sender.username }}
+              </small>
+              <br>
+              Liked your post
+              <p>
+                <strong>
+                  <small>
+                    {{ notification.date|naturaltime }}
+                  </small>
+                </strong>
+              </p>
+            </p>
+          </div>
+        </div>
+        <div class="media-right">
+          <figure class="image is-128x128">
+            <a href="{{ notification.post.get_absolute_url }}">
+              <img src="{{ notification.post.picture.url }}" alt="Image" style="width: 100%;
+                height: 100%;
+                object-fit: cover;
+                overflow: hidden;">
+            </a>
+          </figure>
+        </div>
+
+
+      </article>
+    </div>
+    {% endif %}
+    {% endfor %}
+    <!-- Like Notifications -->
+
+
+  </div>
+</div>
+{% endblock %}
